@@ -92,7 +92,6 @@ static void set_power_profile(int profile) {
 
     if (profile == current_power_profile)
         return;
-
     ALOGV("%s: profile=%d", __func__, profile);
 
     if (current_power_profile != PROFILE_BALANCED) {
@@ -164,6 +163,7 @@ int power_hint_override(__unused struct power_module *module, power_hint_t hint,
 
     switch (hint) {
         case POWER_HINT_INTERACTION:
+            return HINT_HANDLED;
             duration = 500;
             duration_hint = 0;
 
@@ -191,6 +191,7 @@ int power_hint_override(__unused struct power_module *module, power_hint_t hint,
             }
             return HINT_HANDLED;
         case POWER_HINT_LAUNCH:
+            return HINT_HANDLED;
             duration = 2000;
             interaction(duration, ARRAY_SIZE(resources_launch),
                     resources_launch);
@@ -230,12 +231,13 @@ int set_interactive_override(__unused struct power_module *module, int on)
 
     if (!on) {
         /* Display off. */
-             if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
+             //if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
+            //    (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
                int resource_values[] = {
                    TIMER_RATE_BIG, 0x32,
                    //TIMER_RATE_LITTLE, 0x32,
-                   CPUS_ONLINE_MAX_LIMIT_BIG, 0x0,
+                   CPUS_ONLINE_MAX_LIMIT_BIG, 0x1,
+                   CPUS_ONLINE_MAX_LIMIT_LITTLE, 0x3,
                    MAX_FREQ_BIG_CORE_0, 0x327,
                    MAX_FREQ_LITTLE_CORE_0, 0x327,
                    THREAD_MIGRATION_SYNC_ON_V3, 0x0,
@@ -243,15 +245,15 @@ int set_interactive_override(__unused struct power_module *module, int on)
 
                 perform_hint_action(DISPLAY_STATE_HINT_ID,
                         resource_values, ARRAY_SIZE(resource_values));
-             } /* Perf time rate set for CORE0,CORE4 8952 target*/
+             //} /* Perf time rate set for CORE0,CORE4 8952 target*/
 
     } else {
         /* Display on. */
-          if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
+          //if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
+          //      (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
 
              undo_hint_action(DISPLAY_STATE_HINT_ID);
-          }
+          //}
    }
     return HINT_HANDLED;
 }
