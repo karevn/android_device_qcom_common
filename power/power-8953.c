@@ -236,8 +236,8 @@ int set_interactive_override(__unused struct power_module *module, int on)
                int resource_values[] = {
                    TIMER_RATE_BIG, 0x32,
                    //TIMER_RATE_LITTLE, 0x32,
-                   CPUS_ONLINE_MAX_LIMIT_BIG, 0x1,
-                   CPUS_ONLINE_MAX_LIMIT_LITTLE, 0x3,
+                   //CPUS_ONLINE_MAX_LIMIT_BIG, 0x1,
+                   //CPUS_ONLINE_MAX_LIMIT_LITTLE, 0x3,
                    MAX_FREQ_BIG_CORE_0, 0x327,
                    MAX_FREQ_LITTLE_CORE_0, 0x327,
                    THREAD_MIGRATION_SYNC_ON_V3, 0x0,
