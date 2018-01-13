@@ -66,6 +66,8 @@ static int profile_high_performance[] = {
     SCHED_SMALL_TASK_DIS, 0x1,
     SCHED_IDLE_NR_RUN_DIS, 0x1,
     SCHED_IDLE_LOAD_DIS, 0x1,
+    MAX_FREQ_BIG_CORE_0, 0x8A0,
+    MAX_FREQ_LITTLE_CORE_0, 0x8A0,
 };
 
 static int profile_power_save[] = {
@@ -81,7 +83,9 @@ static int profile_bias_power[] = {
 
 static int profile_bias_performance[] = {
     CPUS_ONLINE_MAX_LIMIT_BIG, 0x4,
-    MIN_FREQ_BIG_CORE_0, 0x540,
+    //MIN_FREQ_BIG_CORE_0, 0x540,
+    MAX_FREQ_BIG_CORE_0, 0x8A0,
+    MAX_FREQ_LITTLE_CORE_0, 0x8A0,
 };
 
 int get_number_of_profiles() {
@@ -92,6 +96,7 @@ static void set_power_profile(int profile) {
 
     if (profile == current_power_profile)
         return;
+    set_profile(profile + 1);
     ALOGV("%s: profile=%d", __func__, profile);
 
     if (current_power_profile != PROFILE_BALANCED) {
@@ -234,7 +239,7 @@ int set_interactive_override(__unused struct power_module *module, int on)
              //if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
             //    (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
                int resource_values[] = {
-                   TIMER_RATE_BIG, 0x32,
+                   //TIMER_RATE_BIG, 0x32,
                    //TIMER_RATE_LITTLE, 0x32,
                    //CPUS_ONLINE_MAX_LIMIT_BIG, 0x1,
                    //CPUS_ONLINE_MAX_LIMIT_LITTLE, 0x3,
